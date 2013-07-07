@@ -18,18 +18,24 @@
 #      REVISION:  ---
 #===============================================================================
 
+download_path='.'
+
+[ -z $1 ] && {
+	echo '錯誤：沒有輸入網址'
+	exit 1
+}
 wget -N -P /tmp $1
 
-echo -n '#'>> $HOME/$(basename -s .html $1).downloadlist
-echo $1 >> $HOME/$(basename -s .html $1).downloadlist
+echo -n '#'>> $download_path/$(basename -s .html $1).downloadlist
+echo $1 >> $download_path/$(basename -s .html $1).downloadlist
 
-echo -n '#'>> $HOME/$(basename -s .html $1).downloadlist
+echo -n '#'>> $download_path/$(basename -s .html $1).downloadlist
 title=$(grep -Poh '(?<=<title>).*(?=\[)' /tmp/$(basename $1) |enca -L zh_CN -x UTF-8)
-echo $title >> $HOME/$(basename -s .html $1).downloadlist
-grep -Poh '(?<=src.{2}).*?\.jpe?g' /tmp/$(basename $1) >> $HOME/$(basename -s .html $1).downloadlist
+echo $title >> $download_path/$(basename -s .html $1).downloadlist
+grep -Poh '(?<=src.{2}).*?\.jpe?g' /tmp/$(basename $1) >> $download_path/$(basename -s .html $1).downloadlist
 
 
-#cat $HOME/$(basename -s .html $1).downloadlist|wget -i- -P $title
+#cat $download_path/$(basename -s .html $1).downloadlist|wget -i- -P $title
 
 downloadlist() {
     ctl=0
@@ -45,4 +51,4 @@ downloadlist() {
     done
 }
 
-downloadlist $HOME/$(basename -s .html $1).downloadlist $title
+downloadlist $download_path/$(basename -s .html $1).downloadlist $title
