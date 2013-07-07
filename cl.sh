@@ -51,4 +51,9 @@ downloadlist() {
     done
 }
 
-downloadlist $download_path/$(basename -s .html $1).downloadlist $title
+gallery_gen(){
+    ls $1/*.jp* | xargs -n1 -I% echo '<li><a href="%" rel="lightbox"><img class="gallery" src="%" alt="thumbnail image"/></a\></li>' >> $1/index.html
+}
+
+downloadlist $download_path/$(basename -s .html $1).downloadlist $download_path/$title
+gallery_gen $download_path/$title
