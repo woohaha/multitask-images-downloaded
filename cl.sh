@@ -18,7 +18,7 @@
 #      REVISION:  ---
 #===============================================================================
 
-wget -P /tmp $1
+wget -N -P /tmp $1
 
 echo -n '#'>> $HOME/$(basename -s .html $1).downloadlist
 echo $1 >> $HOME/$(basename -s .html $1).downloadlist
@@ -31,15 +31,18 @@ grep -Poh '(?<=src.{2}).*?\.jpe?g' /tmp/$(basename $1) >> $HOME/$(basename -s .h
 
 #cat $HOME/$(basename -s .html $1).downloadlist|wget -i- -P $title
 
-downloadlist(){
+downloadlist() {
     ctl=0
-    while [ $ctl -le $(wc -l $1)]; do
-	   if [ $(ps aux|grep wget|grep -v grep|wc -l) -le $tasks];then
+    tasks=5
+    lines=$(wc -l $1|cut -d' ' -f1)
+    while [ $ctl -le $lines ]; do
+	   if [ $(ps aux|grep wget|grep -v grep|wc -l) -le $tasks ];then
 		  ((ctl++))
 		  head -n $ctl $1|tail -n1|wget -i- -N -P $2 &
 	   else
 		  continue
 	   fi
+    done
 }
 
 downloadlist $HOME/$(basename -s .html $1).downloadlist $title
