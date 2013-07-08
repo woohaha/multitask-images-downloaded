@@ -30,7 +30,7 @@ echo -n '#'>> $download_path/$(basename -s .html $1).downloadlist
 echo $1 >> $download_path/$(basename -s .html $1).downloadlist
 
 echo -n '#'>> $download_path/$(basename -s .html $1).downloadlist
-title=$(grep -Poh '(?<=<title>).*(?=\ +\-)' /tmp/$(basename $1) |enca -L zh_CN -x UTF-8 | sed 's/  草榴社區//')
+title=$(grep -Poh '(?<=<title>).*(?=\ +\-)' /tmp/$(basename $1) |enca -L zh_CN -x UTF-8 | sed 's/  草榴社區//'|tr '\[\]\ ' '_')
 echo $title >> $download_path/$(basename -s .html $1).downloadlist
 grep -Poh '(?<=src.{2}).*?\.jpe?g' /tmp/$(basename $1) >> $download_path/$(basename -s .html $1).downloadlist
 
@@ -44,7 +44,7 @@ downloadlist() {
     while [ $ctl -le $lines ]; do
 	   if [ $(ps aux|grep wget|grep -v grep|wc -l) -le $tasks ];then
 		  ((ctl++))
-		  head -n $ctl $1|tail -n1|wget --quiet -i- -N -P $2 &
+		  head -n $ctl $1|tail -n1|wget -i- -N -P $2 &
 	   else
 		  continue
 	   fi
