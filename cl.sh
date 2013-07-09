@@ -18,7 +18,7 @@
 #      REVISION:  ---
 #===============================================================================
 
-download_path="$HOME/163"
+download_path="$HOME/163/lll"
 
 [ -z $1 ] && {
 	echo '錯誤：沒有輸入網址'
@@ -30,7 +30,7 @@ echo -n '#'>> $download_path/$(basename -s .html $1).downloadlist
 echo $1 >> $download_path/$(basename -s .html $1).downloadlist
 
 echo -n '#'>> $download_path/$(basename -s .html $1).downloadlist
-title=$(grep -Poh '(?<=<title>).*(?=\ +\-)' /tmp/$(basename $1) |enca -L zh_CN -x UTF-8 | sed 's/  草榴社區//'|tr '\[\]\ ' '_')
+title=$(grep -Poh '(?<=<title>).*(?=\ +\-)' /tmp/$(basename $1) |enca -L zh_CN -x UTF-8 | sed 's/  草榴社區//'|tr '\ ' '_')
 echo $title >> $download_path/$(basename -s .html $1).downloadlist
 grep -Poh '(?<=src.{2}).*?\.jpe?g' /tmp/$(basename $1) >> $download_path/$(basename -s .html $1).downloadlist
 
